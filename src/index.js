@@ -40,7 +40,7 @@ function markupCountryInfo (countries) {
             </ul>`;
         })
     .join('');
-    countryList.innerHTML = markup;
+    countryInfo.innerHTML = markup;
 };
 
 function searchCountry() {

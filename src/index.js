@@ -27,19 +27,16 @@ function markupCountryList (countries) {
 };
 
 function markupCountryInfo (countries) {
-    const markup = countries
-        .map(({ name, capital, population, flags, languages }) => {
-            return `<ul>
+    const { name, capital, population, flags, languages } = countries;
+    const markup = `<ul>
                 <li>
                 <img src="${flags.svg}" width="30" height="20" alt="Flag of ${name.official}">
-                <h2>${name.official}</h2>
+                <h1>${name.official}</h1>
                 </li>
                 <li><p><span>Capital: </span>${capital[0]}</p></li>
                 <li><p><span>Population: </span>${population}</p></li>
                 <li><p><span>Languages: </span>${Object.values(languages)}</p></li>
             </ul>`;
-        })
-    .join('');
     countryInfo.innerHTML = markup;
 };
 
@@ -55,7 +52,7 @@ function searchCountryName() {
             } else if (countries.length >= 2 && countries.length <= 10) {
                 markupCountryList(countries);
             } else if (countries.length === 1) {
-                markupCountryInfo(countries);
+                markupCountryInfo(...countries);
             }
         })
          .catch(error => {

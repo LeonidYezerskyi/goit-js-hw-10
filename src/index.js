@@ -10,14 +10,14 @@ const countryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
 
 
-searchBox.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
+searchBox.addEventListener('input', debounce(searchCountryName, DEBOUNCE_DELAY));
 
 function markupCountryList (countries) {
     const markup = countries
         .map(({ name, flags }) => {
             return `<ul>
                 <li>
-                <img src="${flags.svg}" width="40" height="20" alt="Flag of ${name.official}">
+                <img src="${flags.svg}" width="30" height="20" alt="Flag of ${name.official}">
                 <h1>${name.official}</h1>
                 </li>
             </ul>`;
@@ -31,7 +31,7 @@ function markupCountryInfo (countries) {
         .map(({ name, capital, population, flags, languages }) => {
             return `<ul>
                 <li>
-                <img src="${flags.svg}" width="40" height="25" alt="Flag of ${name.official}">
+                <img src="${flags.svg}" width="30" height="20" alt="Flag of ${name.official}">
                 <h2>${name.official}</h2>
                 </li>
                 <li><p><span>Capital: </span>${capital[0]}</p></li>
@@ -43,11 +43,11 @@ function markupCountryInfo (countries) {
     countryInfo.innerHTML = markup;
 };
 
-function searchCountry() {
+function searchCountryName() {
     let name = searchBox.value.trim();
-    // cleanSearch();
-    if (name !== '') {
-        fetchCountries(name)
+    clearInput();
+    if (name === '') return;
+    fetchCountries(name)
         .then(countries => {
             if (countries.length > 10) {
                 Notiflix.Notify.warning('Too many matches found. Please enter a more specific name.');
@@ -57,13 +57,13 @@ function searchCountry() {
             } else if (countries.length === 1) {
                 markupCountryInfo(countries);
             }
-        });
-    }
+        })
+         .catch(error => {
+        Notiflix.Notify.failure("Oops, there is no country with that name");
+  });
 };
 
-function cleanSearch() {
-    if (searchBox.length === '') {
-        
-    }
-        
+function clearInput() {
+    countryList.innerHTML = '';
+    countryInfo.innerHTML = '';
 };
